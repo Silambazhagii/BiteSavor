@@ -10,6 +10,7 @@ import {
 import { GrPrevious, GrNext } from "react-icons/gr";
 import loadingImage from "../assets/loading.png";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 
 const Home = () => {
@@ -21,6 +22,26 @@ const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState("dessert");
   const categoryRef = useRef();
 
+  const [showDiv, setShowDiv] = useState(true);
+  const [message, setMessage] = useState("");
+
+  const handleNo = () => {
+    setShowDiv(false);
+    setMessage("Sorry for the disturbance");
+  };
+
+
+  const showPopup = (product) => {
+    Swal.fire({
+      title: product.title,
+      html: `
+        <p><strong>Description:</strong> ${product.description}</p>
+        <p><strong>Price:</strong> $${product.price}</p>
+      `,
+      icon: "info",
+      confirmButtonText: "Close",
+    });
+  };
   
 
   useEffect(() => {
@@ -78,15 +99,16 @@ const Home = () => {
 
   return (
     <div
-      className={darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}
+      className={
+        darkMode ? " bg-gray-900 text-white" : "bg-gray-100 text-black"
+      }
     >
-      <div className="absolute top-6 right-4 flex items-center">
+      <div className="absolute top-6 mt-0.5 right-4 flex items-center justify-center">
         <button
           onClick={() => setDarkMode(!darkMode)}
-          className="p-2 transition: background-color 0.3s ease-in-out, transform 0.2s rounded-full h-10 w-10 flex items-center justify-center shadow-md bg-gray-700 text-white hover:scale-110 transition-all"
+          className="p-1 rounded-full h-7 w-7 flex items-center justify-center shadow-md bg-gray-700 text-white hover:scale-105 transition"
         >
-          
-          {darkMode ? <FaSun size={18} /> : <FaMoon size={18} />}
+          {darkMode ? <FaSun size={14} /> : <FaMoon size={14} />}
         </button>
       </div>
 
@@ -112,24 +134,53 @@ const Home = () => {
 
       {/* Featured Products */}
       <div className="text-center justify-center items-center my-10">
-        <h2 className="text-4xl font-bold justify-center items-center text-gray-800">
-          Today's Special
+        <h2
+          className={
+            darkMode
+              ? " text-white text-4xl text-center font-bold"
+              : "font-bold text-gray-700 text-4xl text-center"
+          }
+        >
+          Special Items
         </h2>
-        <div className="flex gap-6 items-center overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 px-4 py-6 justify-center">
+        <div
+          className={
+            darkMode
+              ? "flex gap-6 items-center overflow-x-auto scrollbar-thin scrollbar-thumb-gray-950 scrollbar-track-gray-100 px-4 py-6 justify-center"
+              : "flex gap-6 items-center overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 px-4 py-6 justify-center"
+          }
+        >
           {products.slice(0, 5).map((product) => (
             <div
+              onClick={() => showPopup(product)}
               key={product._id}
-              className="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-all p-5 w-64 min-w-[250px] text-center"
+              className={
+                darkMode
+                  ? "bg-gray-950 texr-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-all p-5 w-64 min-w-[250px] text-center"
+                  : "bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-all p-5 w-64 min-w-[250px] text-center"
+              }
             >
               <img
                 src={product.image}
                 alt={product.name}
                 className="w-full h-44 object-cover rounded-lg"
               />
-              <h3 className="text-xl font-bold mt-2 text-gray-800">
+              <h3
+                className={
+                  darkMode
+                    ? "text-xl font-bold mt-2 text-gray-200"
+                    : "text-xl font-bold mt-2 text-gray-800"
+                }
+              >
                 {product.name}
               </h3>
-              <p className="text-gray-600 text-lg font-bold">
+              <p
+                className={
+                  darkMode
+                    ? "text-gray-400 text-lg font-bold"
+                    : "text-gray-600 text-lg font-bold"
+                }
+              >
                 ${product.price}
               </p>
               <button
@@ -148,6 +199,27 @@ const Home = () => {
           ))}
         </div>
       </div>
+
+      {showDiv && (
+        <div className="p-4 bg-gray-100 rounded-lg shadow-md">
+          <h2 className="text-lg font-semibold mb-3">
+            Are you interested in something other than food?
+          </h2>
+          <div className="flex gap-3">
+            <Link to="/cloth" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+              Yes
+            </Link>
+            <button 
+              className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+              onClick={handleNo}
+            >
+              No
+            </button>
+          </div>
+        </div>
+      )}
+      {message && <p className="mt-3 text-gray-600">{message}</p>}
+    
 
       <div className="flex flex-col items-center justify-center my-6 gap-4">
         <select
@@ -193,17 +265,33 @@ const Home = () => {
             {selectedProducts.map((product) => (
               <div
                 key={product._id}
-                className="bg-white rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-all p-5 w-64 min-w-[250px] text-center"
+                className={
+                  darkMode
+                    ? "bg-gray-950 rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-all p-5 w-64 min-w-[250px] text-center"
+                    : "bg-white rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-all p-5 w-64 min-w-[250px] text-center"
+                }
               >
                 <img
                   src={product.image}
                   alt={product.name}
                   className="w-full h-44 object-cover rounded-lg"
                 />
-                <h3 className="text-xl font-bold mt-2 text-gray-800">
+                <h3
+                  className={
+                    darkMode
+                      ? "text-xl font-bold mt-2 text-gray-200"
+                      : "text-xl font-bold mt-2 text-gray-800"
+                  }
+                >
                   {product.name}
                 </h3>
-                <p className="text-gray-600 text-lg font-bold">
+                <p
+                  className={
+                    darkMode
+                      ? "text-gray-400 text-lg font-bold"
+                      : "text-gray-600 text-lg font-bold"
+                  }
+                >
                   ${product.price}
                 </p>
                 <button
@@ -225,33 +313,68 @@ const Home = () => {
       )}
       {/* </div> */}
 
- {/* Testimonials */}
- <div className="bg-gray-200 py-12">
-        <h2 className="text-4xl font-bold text-gray-800 text-center">
+      {/* Testimonials */}
+      <div
+        className={
+          darkMode ? "bg-gray-900 text-white" : "text-black bg-gray-200 py-12"
+        }
+      >
+        <h2
+          className={
+            darkMode
+              ? " text-white text-4xl text-center font-bold"
+              : "font-bold text-gray-700 text-4xl text-center"
+          }
+        >
           What Our Customers Say
         </h2>
         <div className="flex gap-6 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 px-4 py-6 justify-center">
           {[
             {
               name: "Emma L.",
-              comment: "The food was so fresh, it felt like a home-cooked meal! 10/10 service!",
+              comment:
+                "The food was so fresh, it felt like a home-cooked meal! 10/10 service!",
             },
             {
               name: "David R.",
-              comment: "Lightning-fast delivery! I barely finished my call before my food arrived!",
+              comment:
+                "Lightning-fast delivery! I barely finished my call before my food arrived!",
             },
             {
               name: "Sophia M.",
-              comment: "Delicious meals, great packaging, and excellent customer service. Highly recommend!",
+              comment:
+                "Delicious meals, great packaging, and excellent customer service. Highly recommend!",
             },
           ].map((testimonial, index) => (
             <div
               key={index}
-              className="bg-white p-6 rounded-lg shadow-md w-80 min-w-[280px]"
+              className={
+                darkMode
+                  ? "bg-gray-950 p-6 text-gray-100 rounded-lg shadow-md w-80 min-w-[280px]"
+                  : "bg-white p-6 rounded-lg shadow-md w-80 min-w-[280px]"
+              }
             >
-              <p className="text-gray-600 italic">"{testimonial.comment}"</p>
-              <div className="flex items-center justify-between mt-4">
-                <span className="font-bold text-gray-800">{testimonial.name}</span>
+              <p
+                className={
+                  darkMode ? "text-gray-300 italic" : "text-gray-600 italic"
+                }
+              >
+                "{testimonial.comment}"
+              </p>
+              <div
+                className={
+                  darkMode
+                    ? "flex items-center justify-between mt-4 text-gray-200"
+                    : "flex items-center justify-between mt-4"
+                }
+              >
+                <span
+                  className={
+                    darkMode ? "text-white" : "font-bold text-gray-800"
+                  }
+                >
+                  {testimonial.name}
+                </span>
                 <div className="flex text-yellow-500">
                   {[...Array(5)].map((_, i) => (
                     <FaStar key={i} />
@@ -264,7 +387,13 @@ const Home = () => {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white text-center py-6 mt-10">
+      <footer
+        className={
+          darkMode
+            ? "bg-gray-950 text-white text-center py-6 mt-10"
+            : "bg-gray-800 text-white text-center py-6 mt-10"
+        }
+      >
         <p>&copy; 2025 BiteSavor. All rights reserved.</p>
       </footer>
     </div>

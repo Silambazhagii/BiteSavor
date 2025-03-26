@@ -19,14 +19,17 @@
     "button": "^1.1.1",
     "card": "^2.5.4",
     "dotenv": "^16.4.7",
+    "file-loader": "^6.2.0",
     "framer-motion": "^12.5.0",
     "input": "^1.0.1",
     "lucide-react": "^0.483.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.5.2",
     "react-icons": "^5.5.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.4.0",
+    "redux": "^5.0.1",
     "shadcn-ui": "^0.9.5",
     "sweetalert2": "^11.17.2",
     "ui": "^0.2.4"
@@ -42,7 +45,7 @@
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
     "postcss": "^8.5.3",
-    "tailwindcss": "^4.0.15",
+    "tailwindcss": "^4.0.16",
     "vite": "^6.2.0"
   }
 }

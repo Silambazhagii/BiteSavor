@@ -4,8 +4,6 @@ import { FaSearch, FaShoppingCart, FaMoon, FaSun } from "react-icons/fa";
 import loadingImage from "../assets/loading.png";
 import Swal from "sweetalert2";
 
-
-
 const Menu = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -69,8 +67,6 @@ const Menu = () => {
         </button>
       </div>
 
-
-
       {/* Search Bar */}
       <div className="flex items-center mt-10 justify-center my-6">
         <div className="relative">
@@ -118,7 +114,7 @@ const Menu = () => {
                     Swal.fire({
                       title: "Added to Cart!",
                       icon: "success",
-                      draggable: true
+                      draggable: true,
                     })
                   }
                 >

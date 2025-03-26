@@ -64,7 +64,7 @@ const Contact = () => {
                   href="#"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#E5E4E2] hover:text-blue-700"
+                  className="text-[#E5E4E2] hover:text-blue-300"
                 >
                   {platform}
                 </motion.a>
